@@ -44,6 +44,7 @@ int display_dst(int delay)
 #define DATATYPESIZE 4
 #define NUMGROUPS 4
 Point *usedCoord;
+vector<unsigned long> groups;
 
 void getGroups(unsigned char string[],int numBytes,unsigned long output[]){
 	//convert string to bitstream and halve the bitstream continuously to get 4 groups
@@ -75,12 +76,32 @@ void getGroups(unsigned char string[],int numBytes,unsigned long output[]){
 		}
 }	
 
-void getCoords(int x, int y, unsigned long group[], Point coord){
-	//x= rows y= height
+void createCombinations(unsigned long group[]){
+	// since we have  group of 4 and i hope we wouldnt be changing that because otherwise 
+	//the maths will be slightly complex C(4,2)=6 so each combination of group numbers will
+	//give us coordinates in combination with the x,y
+	
+	//getting the combination values could first couldnt take em on the fly
+	for (int i = 0; i < NUMGROUPS; i++){
+		for (int j = i + 1; j < NUMGROUPS; j++){
+			unsigned long tempx, tempy;
+			tempx = group[i];
+			tempy = group[j];
+			groups.push_back(tempx);
+			groups.push_back(tempy);
+		}
+	}
 
 
+}
 
+void getCoord(int x, int y, Point &coord,int index){
+	//x= rows y= cols
+	//global variable groups used to lookup pairing of each coordinates based on index given
 
+	coord.x = (groups[(index % 6) * 2] + ((index / 6)*(groups[(index % 6) * 2 + 1]))) % x;
+	coord.y = (groups[(index % 6) * 2+1] + ((index / 6)*(groups[(index % 6) * 2 ]))) % y;
+	
 }
 
 
@@ -99,6 +120,7 @@ int main(int argc, char* argv[]){
 	unsigned long group[(MAXTOTALBITS / 8) / DATATYPESIZE] = {0};
 	getGroups(password,i, group);
 	Mat image;
+	
 	while (1){
 		system("cls");
 		cout << "\nEnter the name of the image file (with extension) into which the target is to be encoded ";
@@ -108,8 +130,29 @@ int main(int argc, char* argv[]){
 		if (image.data == NULL){ cout << "\n\n incorrect image try again. "; system("pause"); }
 		else { break; }
 	}
+	
+	//this will be called for each byte of data to be encoded
 	Point coord;
-	getCoords(image.rows, image.cols, group, coord);
+	int index=0; // byte index will be handy when in a loop;
+	createCombinations(group);
+	
+
+	cout << "Enter file name that is to be hidden ";
+	String fileName;
+	cin >> fileName;
+	ifstream file;
+	file.open(fileName, ios::in);
+	
+	while (!file.eof()){
+		getCoord(image.rows, image.cols, coord, index++);
+		unsigned char data=file.get();
+		unsigned char *imageData = image.data;
+		int widthstep = image.step;
+		imageData[(coord.x* widthstep) + coord.y] = data;
+		}
+	cout <<"\n\n\n\n"<< index << " no. of bytes processed";
+	imshow("modified", image);
+	waitKey();
 	system("pause");
 
 

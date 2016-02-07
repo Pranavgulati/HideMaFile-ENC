@@ -1,4 +1,4 @@
-﻿Build started 10-Dec-15 11:55:26 PM.
+﻿Build started 11-Dec-15 1:02:49 AM.
      1>Project "C:\Users\Pranav\documents\visual studio 2013\Projects\HideMaFile-ENC\HideMaFile-ENC\HideMaFile-ENC.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Program Files (x86)\Tesseract-OCR\include\tesseract" /I"C:\Program Files (x86)\Tesseract-OCR\include" /I"C:\Program Files (x86)\Tesseract-OCR\include\leptonica" /IC:\OpenCV\OPENCV2.4.10\opencv\build\include /IC:\OpenCV\OPENCV2.4.10\opencv\build\include\opencv /IC:\OpenCV\OPENCV2.4.10\opencv\build\include\opencv2 /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp
@@ -10,4 +10,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.23
+Time Elapsed 00:00:03.42
